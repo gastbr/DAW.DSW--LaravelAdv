@@ -7,6 +7,7 @@ use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Database\Seeders\PostSeeder;
+use Illuminate\Container\Attributes\Auth;
 
 class DatabaseSeeder extends Seeder
 {
@@ -20,8 +21,8 @@ class DatabaseSeeder extends Seeder
             'email' => 'test@example.com',
         ]);
         $this->call([
-            PostSeeder::class,
-            VideoSeeder::class,
+            AuthorSeeder::class,
+            BookSeeder::class,
         ]);
     }
 }
