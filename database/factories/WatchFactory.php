@@ -4,16 +4,18 @@ namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\User;
 use App\Models\Video;
+use App\Models\Watch;
 
-class VideoFactory extends Factory
+class WatchFactory extends Factory
 {
     /**
      * The name of the factory's corresponding model.
      *
      * @var string
      */
-    protected $model = Video::class;
+    protected $model = Watch::class;
 
     /**
      * Define the model's default state.
@@ -21,9 +23,9 @@ class VideoFactory extends Factory
     public function definition(): array
     {
         return [
-            'title' => $this->faker->sentence(4),
-            'synopsis' => $this->faker->text(),
-            'duration' => $this->faker->randomFloat(2, 0, 999999.99),
+            'user_id' => User::factory(),
+            'video_id' => Video::factory(),
+            'completed_at' => $this->faker->dateTime(),
         ];
     }
 }

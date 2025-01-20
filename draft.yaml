@@ -1,0 +1,42 @@
+models:
+  Video:
+    title: string
+    synopsis: longtext nullable
+    duration: decimal:8,2
+
+  Comment:
+    user_id: id
+    video_id: id
+    content: longtext
+    approved: boolean
+
+  Watch:
+    user_id: id
+    video_id: id
+    completed_at: datetime
+    timestamps: false
+
+controllers:
+  Video:
+    index:
+      query: all
+      render: video.index with:videos
+    show:
+      render: video.show with:videos
+
+  Comment:
+    create:
+      render: comment.create
+    store:
+      validate: content
+      save: comment
+      fire: NewComment with:commment
+      send: CommentCreated with:commment
+      flash: message
+      redirect: comment.create
+
+  Api\Watch:
+    store:
+      validate: user_id, video_id
+      save: watch
+      respond: 204

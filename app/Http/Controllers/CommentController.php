@@ -2,65 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewComment;
+use App\Http\Requests\CommentStoreRequest;
+use App\Mail\CommentCreated;
 use App\Models\Comment;
-use App\Http\Requests\StoreCommentRequest;
-use App\Http\Requests\UpdateCommentRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\View\View;
 
 class CommentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function create(Request $request): Response
     {
-        //
+        return view('comment.create');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function store(CommentStoreRequest $request): Response
     {
-        //
-    }
+        $comment = Comment::create($request->validated());
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreCommentRequest $request)
-    {
-        //
-    }
+        NewComment::dispatch($commment);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Comment $comment)
-    {
-        //
-    }
+        Mail::send(new CommentCreated($commment));
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Comment $comment)
-    {
-        //
-    }
+        $request->session()->flash('message', $message);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(UpdateCommentRequest $request, Comment $comment)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Comment $comment)
-    {
-        //
+        return redirect()->route('comment.create');
     }
 }

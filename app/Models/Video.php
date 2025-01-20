@@ -4,25 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\MorphMany;
 
 class Video extends Model
 {
-    /** @use HasFactory<\Database\Factories\VideoFactory> */
     use HasFactory;
 
-    public function comments(): MorphMany
-    {
-        return $this->morphMany(Comment::class, 'commentable');
-    }
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'title',
+        'synopsis',
+        'duration',
+    ];
 
-    public function image()
-    {
-        return $this->morphOne(Image::class, 'imageable');
-    }
-
-    public function tags()
-    {
-        return $this->morphToMany(Tag::class, 'taggable');
-    }
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'duration' => 'decimal:2',
+    ];
 }
