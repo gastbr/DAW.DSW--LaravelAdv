@@ -14,17 +14,16 @@ class AuthorController extends Controller
     public function index()
     {
         // Eager loading
-        /*
-        * $authors = Author::with('books')->get();
-        * return view('author.index', compact('authors'));
-        */
+        $authors = Author::with('books')->get();
+        return view('queries', compact('authors'));
 
         // Lazy loading
-        $authors = Author::all();
+        /*         $authors = Author::all();
         foreach ($authors as $author) {
             $author->books;
-        }
-        return view('index', compact('authors'));
+        } */
+
+        return view('queries', compact('authors'));
     }
 
     /**
