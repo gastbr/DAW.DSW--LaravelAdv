@@ -7,11 +7,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/queries', [AuthorController::class, 'index']);
 
+Route::resource('conferences', App\Http\Controllers\ConferenceController::class)->only('index', 'show');
 
-Route::resource('videos', App\Http\Controllers\VideoController::class)->only('index', 'show');
+Route::resource('venues', App\Http\Controllers\VenueController::class)->only('index', 'show');
 
-Route::resource('comments', App\Http\Controllers\CommentController::class)->only('create', 'store');
+Route::resource('speakers', App\Http\Controllers\SpeakerController::class)->only('index', 'show');
 
-Route::resource('watches', App\Http\Controllers\Api\WatchController::class)->only('store');
+Route::resource('talks', App\Http\Controllers\TalkController::class)->only('index', 'show');

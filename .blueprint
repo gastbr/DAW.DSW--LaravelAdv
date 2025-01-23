@@ -1,27 +1,36 @@
 created:
-    - app/Http/Controllers/VideoController.php
-    - app/Http/Controllers/CommentController.php
-    - app/Http/Controllers/Api/WatchController.php
-    - database/factories/VideoFactory.php
-    - database/factories/CommentFactory.php
-    - database/factories/WatchFactory.php
-    - database/migrations/2025_01_20_172435_create_videos_table.php
-    - database/migrations/2025_01_20_172436_create_comments_table.php
-    - database/migrations/2025_01_20_172437_create_watches_table.php
-    - app/Models/Video.php
-    - app/Models/Comment.php
-    - app/Models/Watch.php
-    - tests/Feature/Http/Controllers/VideoControllerTest.php
-    - tests/Feature/Http/Controllers/CommentControllerTest.php
-    - tests/Feature/Http/Controllers/Api/WatchControllerTest.php
-    - app/Events/NewComment.php
-    - app/Http/Requests/CommentStoreRequest.php
-    - app/Http/Requests/Api/WatchStoreRequest.php
-    - app/Mail/CommentCreated.php
-    - resources/views/emails/comment-created.blade.php
-    - resources/views/video/index.blade.php
-    - resources/views/video/show.blade.php
-    - resources/views/comment/create.blade.php
+    - app/Http/Controllers/ConferenceController.php
+    - app/Http/Controllers/VenueController.php
+    - app/Http/Controllers/SpeakerController.php
+    - app/Http/Controllers/TalkController.php
+    - database/factories/ConferenceFactory.php
+    - database/factories/VenueFactory.php
+    - database/factories/SpeakerFactory.php
+    - database/factories/TalkFactory.php
+    - database/migrations/2025_01_23_173055_create_conferences_table.php
+    - database/migrations/2025_01_23_173056_create_venues_table.php
+    - database/migrations/2025_01_23_173057_create_speakers_table.php
+    - database/migrations/2025_01_23_173058_create_talks_table.php
+    - app/Models/Conference.php
+    - app/Models/Venue.php
+    - app/Models/Speaker.php
+    - app/Models/Talk.php
+    - database/seeders/ConferenceSeeder.php
+    - database/seeders/VenueSeeder.php
+    - database/seeders/SpeakerSeeder.php
+    - database/seeders/TalkSeeder.php
+    - tests/Feature/Http/Controllers/ConferenceControllerTest.php
+    - tests/Feature/Http/Controllers/VenueControllerTest.php
+    - tests/Feature/Http/Controllers/SpeakerControllerTest.php
+    - tests/Feature/Http/Controllers/TalkControllerTest.php
+    - resources/views/conference/index.blade.php
+    - resources/views/conference/show.blade.php
+    - resources/views/venue/index.blade.php
+    - resources/views/venue/show.blade.php
+    - resources/views/speaker/index.blade.php
+    - resources/views/speaker/show.blade.php
+    - resources/views/talk/index.blade.php
+    - resources/views/talk/show.blade.php
 updated:
     - routes/web.php
 models:
@@ -32,6 +41,7 @@ models:
     Post: { name: string, user_id: 'biginteger unsigned' }
     Tag: { name: string }
     User: { name: string, email: string, email_verified_at: 'timestamp nullable', password: string, remember_token: 'string:100 nullable', country_id: 'biginteger unsigned' }
-    Video: { title: string, synopsis: 'longtext nullable', duration: 'decimal:8,2' }
-    Comment: { user_id: id, video_id: id, content: longtext, approved: boolean }
-    Watch: { user_id: id, video_id: id, completed_at: datetime, timestamps: false }
+    Conference: { name: string, city: string, country: string, postal_code: string, relationships: { hasMany: 'Venue, Speaker, Talk' } }
+    Venue: { name: string, description: 'longtext nullable', start_date: datetime, end_date: datetime, status: 'enum:pending,approved,declined,finished', region: 'enum:us,eu,asia', relationships: { belongsTo: Conference } }
+    Speaker: { name: string, bio: 'longtext nullable', email: email, twitter: 'string nullable', relationships: { hasMany: 'Conference, Talk' } }
+    Talk: { title: string, relationships: { belongsTo: Speaker, hasMany: Conference } }

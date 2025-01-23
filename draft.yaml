@@ -1,42 +1,47 @@
 models:
-  Video:
+  Conference:
+    name: string
+    city: string
+    country: string
+    postal_code: string
+    relationships:
+      hasMany: Venue, Speaker, Talk
+
+  Venue:
+    name: string
+    description: longtext nullable
+    start_date: datetime
+    end_date: datetime
+    status: enum:pending,approved,declined,finished
+    region: enum:us,eu,asia
+    relationships:
+      belongsTo: Conference
+
+  Speaker:
+    name: string
+    bio: longtext nullable
+    email: email
+    twitter: string nullable
+    relationships:
+      hasMany: Conference, Talk
+
+  Talk:
     title: string
-    synopsis: longtext nullable
-    duration: decimal:8,2
-
-  Comment:
-    user_id: id
-    video_id: id
-    content: longtext
-    approved: boolean
-
-  Watch:
-    user_id: id
-    video_id: id
-    completed_at: datetime
-    timestamps: false
+    relationships:
+      belongsTo: Speaker
+      hasMany: Conference
 
 controllers:
-  Video:
-    index:
-      query: all
-      render: video.index with:videos
-    show:
-      render: video.show with:videos
+  Conference:
+    resource: index, show
 
-  Comment:
-    create:
-      render: comment.create
-    store:
-      validate: content
-      save: comment
-      fire: NewComment with:commment
-      send: CommentCreated with:commment
-      flash: message
-      redirect: comment.create
+  Venue:
+    resource: index, show
 
-  Api\Watch:
-    store:
-      validate: user_id, video_id
-      save: watch
-      respond: 204
+  Speaker:
+    resource: index, show
+
+  Talk:
+    resource: index, show
+
+seeders: Conference, Venue, Speaker, Talk
