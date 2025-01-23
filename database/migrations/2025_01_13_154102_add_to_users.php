@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::table('users', function (Blueprint $table) {
             $table->bigInteger('country_id')->unsigned()->index();
             $table->foreign('country_id')->references('id')->on('countries')->onDelete('restrict');
+            $table->string('github_id')->nullable();
+            $table->string('github_token')->nullable();
+            $table->string('github_refresh_token')->nullable();
         });
     }
 
